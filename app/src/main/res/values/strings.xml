@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">CF Task</string>
+
+    <string name="action_about">Show JSON</string>
+
+    <string name="title_activity_splash">CF Task</string>
+    <string name="title_activity_catalog">Catalog</string>
+    <string name="title_activity_offers">Offers</string>
+    <string name="title_activity_offer_detail">Offer Details</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+</resources>

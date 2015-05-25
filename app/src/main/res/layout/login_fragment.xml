@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#ff510700">
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Login"
+        android:id="@+id/button"
+        android:onClick="getToken"
+        android:layout_marginTop="120dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextUserName"
+        android:textAlignment="gravity"
+        android:gravity="center_vertical|center_horizontal"
+        android:hint="USER NAME"
+        android:textColor="#ffffffff"
+        android:textColorHint="#ffffffff"
+        android:inputType="textEmailAddress|textFilter|textNoSuggestions"
+        android:layout_above="@+id/editTextPassword"
+        android:layout_centerHorizontal="true">
+        <requestFocus/>
+    </EditText>
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/editTextPassword"
+        android:layout_marginBottom="40dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:textAlignment="gravity"
+        android:layout_alignBottom="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:hint="PASSWORD"
+        android:textColorHint="#ffffffff"
+        android:textColor="#ffffffff" />
+
+</RelativeLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#ff262626">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewToken"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffb7b7b7"
+        android:text="Please Login and Get Token first."
+        android:textSize="10sp"
+
+        android:gravity="center_vertical|center_horizontal"
+        android:singleLine="false"
+        android:paddingTop="6dp"
+        android:paddingBottom="3dp" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageViewTick"
+        android:layout_below="@+id/textViewToken"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/greentick"
+        android:visibility="invisible" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Open Catalog"
+        android:id="@+id/buttonOpenCatalog"
+        android:layout_below="@+id/imageViewTick"
+        android:layout_centerHorizontal="true"
+        android:enabled="false" />
+
+</RelativeLayout>
