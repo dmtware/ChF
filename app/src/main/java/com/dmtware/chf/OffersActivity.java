@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.dmtware.chf.model.Offer;
+import com.dmtware.chf.network.AppController;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -37,12 +38,13 @@ import java.util.Map;
 
 public class OffersActivity extends ActionBarActivity {
 
+    // groups url
     public final String CF_URL = "http://forgedemo.channelforge.com/forgeapi/v1/Content/Groups";
 
+    // tags for intents
     public static String EXTRA_URL = "com.dmtware.chf.MESSAGE";
     public static String EXTRA_ID = "com.dmtware.chf.ID";
     public static String EXTRA_POSITION = "com.dmtware.chf.POSITION";
-
 
     String groupUrl, currentGroupName;
 
@@ -107,8 +109,12 @@ public class OffersActivity extends ActionBarActivity {
 
     // Get offers
     public void getOffers(){
-        RequestQueue queue = Volley.newRequestQueue(this);
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+
+        // Tag used to cancel the request
+        String tag_json_offers = "json_obj_req_offers";
+
+        //RequestQueue queue = Volley.newRequestQueue(this);
+        JsonObjectRequest jsonObjReqOffers = new JsonObjectRequest(Request.Method.GET,
                 groupUrl, null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -131,9 +137,7 @@ public class OffersActivity extends ActionBarActivity {
                         ids.add(offerList.get(i).getId());
                     }
 
-                    // add friendly names to the listview
-                    //ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(OffersActivity.this, R.layout.row_layout, offers);
-
+                    // listAdapter and listView
                     itemsAdapter = new OffersAdapter(OffersActivity.this, offers);
                     listViewOffers.setAdapter(itemsAdapter);
 
@@ -161,7 +165,8 @@ public class OffersActivity extends ActionBarActivity {
                 return params;
             }
         };
-        queue.add(jsonObjReq);
+        // add to the queue
+        AppController.getInstance().addToRequestQueue(jsonObjReqOffers, tag_json_offers);
     }
 
     // displays detail activity

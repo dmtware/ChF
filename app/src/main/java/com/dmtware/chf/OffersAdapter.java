@@ -12,6 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.dmtware.chf.network.AppController;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -21,7 +25,7 @@ import java.util.ArrayList;
 public class OffersAdapter extends ArrayAdapter<String> {
 
     public OffersAdapter(Context context, ArrayList<String> offers) {
-        super(context, R.layout.row_offer ,offers);
+        super(context, R.layout.row_offer, offers);
     }
 
 
@@ -31,13 +35,11 @@ public class OffersAdapter extends ArrayAdapter<String> {
         LayoutInflater theInflater = LayoutInflater.from(getContext());
         View theView = theInflater.inflate(R.layout.row_offer, parent, false);
 
+        // get string and extract name and img url
         String offer = getItem(position);
-
         int index = offer.indexOf("|");
-
         String offerName = offer.substring(0, (index - 1));
-
-        String offerImage = offer.substring(index+3, offer.indexOf(","));
+        String offerImage = offer.substring(index + 3, offer.indexOf(","));
 
         Log.i("My Log", offerImage);
 
@@ -45,34 +47,11 @@ public class OffersAdapter extends ArrayAdapter<String> {
 
         theTextView.setText(offerName);
 
-        ImageView theImageView = (ImageView) theView.findViewById(R.id.image);
-
-        new ImageDownloader(theImageView).execute(offerImage);
+        // img
+        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+        NetworkImageView imgNetWorkView = (NetworkImageView) theView.findViewById(R.id.image);
+        imgNetWorkView.setImageUrl(offerImage, imageLoader);
 
         return theView;
-    }
-
-    class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public ImageDownloader(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String url = urls[0];
-            Bitmap mIcon = null;
-            try {
-                InputStream in = new java.net.URL(url).openStream();
-                mIcon = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-            }
-            return mIcon;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
 }

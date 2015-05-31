@@ -18,8 +18,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
+import com.dmtware.chf.network.AppController;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +43,7 @@ public class OfferDetailActivity extends ActionBarActivity {
     int position;
 
     TextView textViewDetailId, getTextViewDetailName;
-    ImageView imageViewDetil;
+    NetworkImageView imageViewDetil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,7 @@ public class OfferDetailActivity extends ActionBarActivity {
         // initialize views
         textViewDetailId = (TextView)findViewById(R.id.textViewDetailId);
         getTextViewDetailName = (TextView)findViewById(R.id.textViewDetailName);
-        imageViewDetil = (ImageView)findViewById(R.id.imageViewDetail);
+        imageViewDetil = (NetworkImageView)findViewById(R.id.imageViewDetail);
 
         // get data
         Intent intent = getIntent();
@@ -89,7 +92,10 @@ public class OfferDetailActivity extends ActionBarActivity {
 
     // Get offer details
     public void getOfferDetails(){
-        RequestQueue queue = Volley.newRequestQueue(this);
+
+        // Tag used to cancel the request
+        String tag_json_offers_detail = "json_obj_req_offers_detail";
+
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 groupUrl, null, new Response.Listener<JSONObject>() {
 
@@ -116,8 +122,10 @@ public class OfferDetailActivity extends ActionBarActivity {
                     String imgUrl = mediaObject.getString("Resource");
 
                     System.out.println(imgUrl);
+                    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
-                    new ImageDownloader(imageViewDetil).execute(imgUrl);
+                    imageViewDetil.setImageUrl(imgUrl, imageLoader);
+                    //new ImageDownloader(imageViewDetil).execute(imgUrl);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -142,30 +150,7 @@ public class OfferDetailActivity extends ActionBarActivity {
                 return params;
             }
         };
-        queue.add(jsonObjReq);
-    }
-
-    class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public ImageDownloader(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String url = urls[0];
-            Bitmap mIcon = null;
-            try {
-                InputStream in = new java.net.URL(url).openStream();
-                mIcon = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-            }
-            return mIcon;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
+        // add to the queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_offers_detail);
     }
 }
