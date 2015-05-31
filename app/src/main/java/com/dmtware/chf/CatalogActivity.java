@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.dmtware.chf.model.Data;
+import com.dmtware.chf.network.AppController;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -87,10 +88,12 @@ public class CatalogActivity extends ActionBarActivity {
 
     // Get media groups
     public void getMediaGroups(){
-        RequestQueue queue = Volley.newRequestQueue(this);
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                CF_URL, null, new Response.Listener<JSONObject>() {
 
+        // Tag used to cancel the request
+        String tag_json_cat = "json_obj_cat";
+
+        JsonObjectRequest jsonObjReqCatalog = new JsonObjectRequest(Request.Method.GET,
+                CF_URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("On Response", response.toString());
@@ -135,8 +138,10 @@ public class CatalogActivity extends ActionBarActivity {
                 return params;
             }
         };
-        queue.add(jsonObjReq);
+        // add to the queue
+        AppController.getInstance().addToRequestQueue(jsonObjReqCatalog, tag_json_cat);
     }
+
     // displays the content of the media group category
     private void showOffers(int position){
 
